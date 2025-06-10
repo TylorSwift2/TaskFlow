@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from core.core.views.views import home
+from login.core.views.views import login
 urlpatterns = [
-    path('', home, name="home"),
+    path('login/', login, name="login" ),
 ]
