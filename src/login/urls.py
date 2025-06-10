@@ -1,6 +1,6 @@
-from django.contrib import admin
-from django.urls import path, include
-from login.core.views.views import login
+from django.urls import path
+from login.core.views.views import login, sucess
 urlpatterns = [
     path('login/', login, name="login" ),
+    path('sucess/', sucess, name="sucess")
 ]
