@@ -1,10 +1,12 @@
-{% load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registro</title>
+    
+    <!-- CSS externo -->
     <link rel="stylesheet" href="{% static 'css/css.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
@@ -12,22 +14,10 @@
     <div class="container">
         <div class="form-container">
             <h2 class="text-center">Registro</h2>
-            <form name="LoginForm" id="form" method="POST" class="form-horizontal" action="{% url 'registrer' %}">
-              {% csrf_token %}
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input type="text" class="form-control" name="user" placeholder="Usuário">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input type="password" class="form-control" name="password" placeholder="Senha">
-                    </div>
-                </div>
-
+            
+            <form name="RegistrationForm" id="form" method="POST" class="form-horizontal" action="{% url 'login:registrer' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
                 <div class="form-group">
                     <div class="col-sm-12 controls">
                         <button type="submit" class="btn btn-primary pull-right">

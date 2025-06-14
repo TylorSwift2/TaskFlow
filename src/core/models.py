@@ -12,4 +12,4 @@ class Pessoa(models.Model):
         return pessoa
         
     def __str__(self):
-        return self.user, self.senha
+        return f"{self.user} -{self.senha}"

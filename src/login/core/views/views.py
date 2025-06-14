@@ -33,15 +33,19 @@ def registrer(request):
         # Error if try invalid formulary
         return HttpResponse(300)
     else:
+        user = form.cleaned_data["user"]
+        password = form.cleaned_data["password"]
+        if Pessoa.objects.filter(user=user).exists():
+            return HttpResponse("Usuário já existe", status=400)
         # Save the user in the database
-        try:
-            Pessoa.registrer( form.cleaned_data["user"], form.cleaned_data["password"])
-            print("User registered successfully")
-        except Exception as e:
+            try:
+                Pessoa.registrer( form.cleaned_data["user"], form.cleaned_data["password"])
+                print("User registered successfully")
+            except Exception as e:
             # Error if the user already exists
-            print(f"Error registering user: {e}")
-            return HttpResponse(300)
-        return redirect('home')
+                print(f"Error registering user: {e}")
+                return HttpResponse(300)
+    return redirect('home')
 
 def sucess(request):
     # Here I receive the form to do something
