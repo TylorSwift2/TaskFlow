@@ -1,32 +1,194 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registro</title>
-    
-    <!-- CSS externo -->
-    <link rel="stylesheet" href="{% static 'css/css.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registrar - Futurista</title>
+
+  <!-- Fontes e Estilos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto:wght@300;400&display=swap');
+
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(270deg, #0f2027, #203a43, #2c5364);
+      background-size: 600% 600%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50% }
+      50% { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
+    }
+
+    .glass-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px 50px;
+      width: 350px;
+      box-shadow:
+        0 8px 32px 0 rgba(31, 38, 135, 0.37),
+        0 0 15px rgba(255, 0, 255, 0.2),
+        inset 0 0 10px rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .glass-container h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 500;
+      font-size: 2.4rem;
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+      color: #e0aaff;
+      text-align: center;
+    }
+
+    .glass-container p {
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+      text-align: center;
+      color: #dcd6f7;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #c8bfff;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1rem;
+      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder,
+    input[type="email"]::placeholder {
+      color: #ddd6ffaa;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+      background: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 8px 2px #c77dff;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(45deg, #9f7fff, #c77dff);
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      letter-spacing: 1.5px;
+      box-shadow: 0 0 12px #c77dffaa;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(45deg, #bb9fff, #dfbfff);
+      box-shadow: 0 0 20px #dfbfff;
+    }
+
+    .login-link {
+      margin-top: 18px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .login-link a {
+      color: #c8bfff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .login-link a:hover {
+      color: #dfbfff;
+    }
+
+    .error-list {
+      background: rgba(255, 0, 255, 0.15);
+      border-radius: 10px;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+      color: #f8c8ff;
+      font-size: 0.85rem;
+    }
+
+    .error-list li {
+      margin-left: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-container">
-            <h2 class="text-center">Registro</h2>
-            
-            <form name="RegistrationForm" id="form" method="POST" class="form-horizontal" action="{% url 'login:registrer' %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <div class="form-group">
-                    <div class="col-sm-12 controls">
-                        <button type="submit" class="btn btn-primary pull-right">
-                            <i class="glyphicon glyphicon-log-in"></i> Registrar
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+
+<div class="glass-container">
+  <h1><i class="fa-solid fa-robot"></i> Registro</h1>
+  <p>Crie sua conta agora mesmo.</p>
+
+  <form method="POST" action="{% url 'login:registrer' %}">
+    {% csrf_token %}
+
+    {% if form.errors %}
+      <ul class="error-list">
+        {% for field in form %}
+          {% for error in field.errors %}
+            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+          {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <label for="id_username">Usuário</label>
+    {{ form.user }}
+
+    <label for="id_email">E-mail</label>
+    {{ form.email }}
+
+    <label for="id_password1">Senha</label>
+    {{ form.password1 }}
+
+    <label for="id_password2">Confirmar senha</label>
+    {{ form.password2 }}
+
+    <button type="submit">Registrar</button>
+  </form>
+
+  <p class="login-link">Já tem uma conta? <a href="{% url 'login:home' %}">Entrar</a></p>
+</div>
+
+<!-- Ícones do FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
 </body>
 </html>

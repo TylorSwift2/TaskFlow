@@ -26,6 +26,9 @@ SECRET_KEY = 'django-insecure-34uqh)$7kn@&(_7a=d%a0yj^1+*-(15n4x!q076vyl8j4o61i=
 DEBUG = True
 
 ALLOWED_HOSTS = []
+LOGIN_URL = '/login/'
+RE ="/index/"
+HOME ="/"
 
 
 # Application definition
@@ -40,7 +43,6 @@ INSTALLED_APPS = [
     'core',
     'login'
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -49,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'login.middleware.LoginRequiredMiddleware',  # Adicione esta linha
 ]
 
 ROOT_URLCONF = 'TaskFlow.urls'

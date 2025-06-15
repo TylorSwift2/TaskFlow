@@ -1,16 +1,31 @@
-   
-   {% load static %}
-   <!DOCTYPE html>
-    <html lang="pt-BR">
-    <head>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskFlow | Gestão com Harmonia</title>
-    <!-- Link para o CSS externo -->
     <link rel="stylesheet" href="{% static 't.css' %}">
-    </head>
-    <body>
-	   <a href="{% url 'login:index' %}">teste</a>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1 class="animated-title">Bem-vindo ao TaskFlow</h1>
+            <p>Organize suas tarefas com eficiência e harmonia.</p>
 
-    </body>
-    </html>
+            <div class="input-group">
+                <span class="input-group-text">📧</span>
+                <input type="email" placeholder="Digite seu e-mail">
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-text">🔒</span>
+                <input type="password" placeholder="Digite sua senha">
+            </div>
+
+            <a href="{% url 'login:index' %}" class="animated-button">Registrar-se</a>
+            <a href="{% url 'login:login' %}" class="animated-button">Entrar</a>
+        </div>
+    </div>
+</body>
+</html>
