@@ -5,7 +5,31 @@ from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from core.models import Pessoa
 
-# Create your views here.
+class AuthenticationService:
+    """
+    Handles authentication logic for users.
+    """
+    @staticmethod
+    def authenticate(username, password):
+        try:
+            pessoa = Pessoa.objects.get(user=username)
+            if check_password(password, pessoa.senha):
+                return pessoa
+        except Pessoa.DoesNotExist:
+            return None
+        return None
+
+class RegistrationService:
+    """
+    Handles user registration logic.
+    """
+    @staticmethod
+    def register(user, password1, password2, email):
+        if password1 != password2:
+            raise ValueError("Passwords must match!")
+        if Pessoa.objects.filter(user=user).exists():
+            raise ValueError("User already exists")
+        return Pessoa.registrer(user, password1, email=email)
 
 def index(request):
     """
@@ -22,33 +46,23 @@ def home(request):
 def login(request):
     """
     Handles user login.
-    If the request is POST, validates the login form, checks user credentials,
-    and sets session variables if successful. Otherwise, shows error messages.
-    If the request is GET, renders the login form.
     """
     if request.method == "POST":
         form = forms.LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data["user"]
             password = form.cleaned_data["password"]
-
-            try:
-                pessoa = Pessoa.objects.get(user=username)
-            except Pessoa.DoesNotExist:
-                messages.error(request, "User not found")
-                return render(request, "login.html", {'form': form})
-
-            if check_password(password, pessoa.senha):
+            pessoa = AuthenticationService.authenticate(username, password)
+            if pessoa:
                 request.session['user_id'] = pessoa.id
                 request.session['user_name'] = pessoa.user
                 messages.success(request, f'Welcome, {pessoa.user}!')
                 return redirect('login:home')
             else:
-                messages.error(request, "Incorrect password")
-                return render(request, "login.html", {'form': form})
+                messages.error(request, "Invalid username or password")
         else:
-            return render(request, "login.html", {'form': form})
-
+            messages.error(request, "Invalid form data")
+        return render(request, "login.html", {'form': form})
     else:
         form = forms.LoginForm()
         return render(request, "login.html", {'form': form})
@@ -56,15 +70,9 @@ def login(request):
 def registrer(request):
     """
     Handles user registration.
-    Only accepts POST requests. Validates required fields and form data,
-    checks if passwords match and if the user already exists.
-    Registers the user if all checks pass.
     """
     if request.method != "POST":
         return HttpResponseBadRequest("Invalid method!")
-
-    if "user" not in request.POST or "password1" not in request.POST or "password2" not in request.POST:
-        return HttpResponseBadRequest("Missing required fields!")
 
     form = forms.RegistrationForm(request.POST)
     if not form.is_valid():
@@ -75,15 +83,11 @@ def registrer(request):
     password2 = form.cleaned_data["password2"]
     email = form.cleaned_data["email"]
 
-    if password1 != password2:
-        return HttpResponseBadRequest("Passwords must match!")
-
-    if Pessoa.objects.filter(user=user).exists():
-        return HttpResponse("User already exists", status=400)
-
     try:
-        Pessoa.registrer(user, password1, email=email)
+        RegistrationService.register(user, password1, password2, email)
         return redirect('home')
+    except ValueError as ve:
+        return HttpResponse(str(ve), status=400)
     except Exception as e:
         return HttpResponse(f"Error registering user: {e}", status=500)
 
@@ -94,15 +98,11 @@ def sucess(request):
     Renders the home page on success.
     """
     if request.method != "POST":
-        # Error if accessed without POST
         return HttpResponse(300)
     
     form = forms.LoginForm(request.POST)
-    
     if not form.is_valid():
-        # Error if form is invalid
         return HttpResponse(300)
     
-    # Print success and render
     print("Success")
     return render(request, "home.html")

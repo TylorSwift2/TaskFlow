@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("core.urls")),
     path('', include("login.urls")),
+    path('p', include("painel.urls")),
 
 ]
