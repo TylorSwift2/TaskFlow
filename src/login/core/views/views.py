@@ -47,6 +47,7 @@ def login(request):
     """
     Handles user login.
     """
+   
     if request.method == "POST":
         form = forms.LoginForm(request.POST)
         if form.is_valid():
@@ -56,6 +57,7 @@ def login(request):
             if pessoa:
                 request.session['user_id'] = pessoa.id
                 request.session['user_name'] = pessoa.user
+                request.session['is_authenticated'] = True  # Adicione esta flag
                 messages.success(request, f'Welcome, {pessoa.user}!')
                 return redirect('login:home')
             else:
